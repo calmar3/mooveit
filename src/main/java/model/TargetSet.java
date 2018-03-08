@@ -2,19 +2,23 @@ package model;
 
 import java.util.TreeSet;
 
-public class CommissionSet {
+public class TargetSet {
 
     private TreeSet<Commission> commissionTreeSet;
 
-    private static CommissionSet instance;
+    private static TargetSet instance;
 
-    private CommissionSet() {
+    private TargetSet() {
         this.commissionTreeSet = new TreeSet<Commission>();
     }
 
-    public static CommissionSet  getInstance(){
+    public TreeSet<Commission> getCommissionTreeSet() {
+        return commissionTreeSet;
+    }
+
+    public static TargetSet getInstance(){
         if (instance == null)
-            instance = new CommissionSet();
+            instance = new TargetSet();
         return instance;
     }
 
@@ -24,7 +28,7 @@ public class CommissionSet {
 
     @Override
     public String toString() {
-        return "CommissionSet{" +
+        return "TargetSet{" +
                 "commissionTreeSet=" + commissionTreeSet.toString() +
                 '}';
     }

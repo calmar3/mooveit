@@ -8,10 +8,6 @@ public class Commission implements Comparable<Commission>{
     public Commission() {
     }
 
-    public Commission(String id, Integer target) {
-        this.id = id;
-        this.target = target;
-    }
 
     public String getId() {
         return id;
@@ -38,10 +34,10 @@ public class Commission implements Comparable<Commission>{
     }
 
     public int compareTo(Commission o) {
-        // necessary to ensure the proper functioning of the priority queue data structure
+        // necessary to ensure the proper functioning of the treeset data structure
         if (this.target < o.target)
             return -1;
-        else if (this.target == o.target)
+        else if ((this.target == o.target) && (this.id.equals(o.id)))
             return 0;
         else
             return 1;
