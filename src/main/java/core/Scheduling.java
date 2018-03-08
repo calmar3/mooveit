@@ -6,9 +6,7 @@ import model.Distance;
 import model.DistanceMap;
 import model.TargetSet;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.TreeSet;
+import java.util.*;
 
 public class Scheduling {
 
@@ -17,9 +15,9 @@ public class Scheduling {
         TargetSet targetSet = TargetSet.getInstance();
         HashMap<String,TreeSet<Distance>> distanceMap = DistanceMap.getInstance().getDistanceMap();
         HashMap<String,HashMap<String,Integer>> allocation = new HashMap<String, HashMap<String, Integer>>();
-        Iterator<Commission> iterator = targetSet.getCommissionTreeSet().iterator();
+        List<Commission> temp = new ArrayList<Commission>(targetSet.getCommissionTreeSet());
         for (int i = 0; i < AppConfig.MOVER_NUMBER; i++) {
-            Commission commission = iterator.next();
+            Commission commission = temp.get(0);
             Iterator<Distance> itr = distanceMap.get(commission.getId()).iterator();
             while (itr.hasNext()) {
                 Distance distance = itr.next();
@@ -30,6 +28,8 @@ public class Scheduling {
                     break;
                 }
             }
+            temp.remove(0);
         }
+        targetSet.setCommissionTreeSet(new TreeSet<Commission>(temp));
     }
 }

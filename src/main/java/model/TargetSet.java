@@ -26,6 +26,10 @@ public class TargetSet {
         this.commissionTreeSet.add(commission);
     }
 
+    public void setCommissionTreeSet(TreeSet<Commission> commissionTreeSet) {
+        this.commissionTreeSet = commissionTreeSet;
+    }
+
     @Override
     public String toString() {
         return "TargetSet{" +
