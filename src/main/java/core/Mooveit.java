@@ -8,7 +8,9 @@ public class Mooveit {
         long start = System.currentTimeMillis();
         CSVReader.parseCommissionTarget("src/main/resources/deliveryTime_ist3.csv");
         CSVReader.parseMatrix("src/main/resources/distanceMatrix_ist3.csv");
+        Scheduling.run();
         long elapsed = System.currentTimeMillis();
         System.out.println(elapsed-start);
     }
+
 }

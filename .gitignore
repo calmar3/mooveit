@@ -107,6 +107,7 @@ local.properties
 .DS_Store
 mooveit.iml
 /target/
+out
 
 
 /output

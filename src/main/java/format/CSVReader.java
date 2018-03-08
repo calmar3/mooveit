@@ -41,7 +41,6 @@ public class CSVReader {
 
     public static void parseMatrix(String input){
         try {
-
             Reader in = new FileReader(input);
             Iterable<CSVRecord> records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(in);
             Map<String,String> map;
