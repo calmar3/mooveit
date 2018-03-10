@@ -2,6 +2,8 @@ package core;
 
 import config.AppConfig;
 import model.*;
+import output.Goal;
+import output.X;
 
 import java.util.*;
 
@@ -34,12 +36,17 @@ public class Scheduling {
                         value.put(distance.getId(),distance.getDistance());
                         allocation.put(commission.getId(),value);
                         Adjacency.getAdj().put(distance.getId(),commission.getId());
+                        Goal.updateGoal(distance.getDistance()-commission.getTarget());
+                        X.update(commission.getId(),commission.getTarget(),distance.getDistance());
                         break;
                     }
                 }
             }
             temp.remove(0);
         }
+                   for (Map.Entry<String, Integer> entry : X.getX().entrySet()) {
+                System.out.println("Commission: " + entry.getKey() + " - Raw:" + entry.getValue().toString());
+            }
         targetSet.setCommissionTreeSet(new TreeSet<Commission>(temp));
     }
 
