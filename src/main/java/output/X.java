@@ -22,8 +22,7 @@ public class X {
             x.put(commission,target- AppConfig.EARLY_DELIVERY_TIME);
         }
         else{
-            //todo
-            x.put(commission,delivery);
+            x.put(commission,delay);
         }
     }
 }

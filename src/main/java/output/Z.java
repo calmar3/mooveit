@@ -13,4 +13,7 @@ public class Z {
     public static void setZ(HashMap<String, Integer> z) {
         Z.z = z;
     }
+
+    public static void update() {
+    }
 }
