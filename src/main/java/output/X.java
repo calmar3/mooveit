@@ -16,13 +16,19 @@ public class X {
         X.x = x;
     }
 
-    public static void update(String commission, Integer target, Integer delay){
-        Integer delivery = delay-target;
+    public static void update(String commission, Integer target, Integer delay,Integer lastDelivery){
+/*        if (commission.equals("5a199c0b649dcd3edb29ed7a")){
+            System.out.println("comm:" +commission);
+            System.out.println("target:" +target);
+            System.out.println("delay:" +delay);
+        }*/
+
+        Integer delivery = (lastDelivery + delay) - target;
         if (delivery < -15){
-            x.put(commission,target- AppConfig.EARLY_DELIVERY_TIME);
+            x.put(commission,target - AppConfig.EARLY_DELIVERY_TIME);
         }
         else{
-            x.put(commission,delay);
+            x.put(commission,lastDelivery + delay);
         }
     }
 }

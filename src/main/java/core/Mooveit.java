@@ -12,7 +12,7 @@ public class Mooveit {
         Goal.initGoal();
         Scheduling.run();
         long elapsed = System.currentTimeMillis();
-        System.out.println(elapsed-start);
+        System.out.println("Execution time: " + (elapsed-start));
     }
 
 }
