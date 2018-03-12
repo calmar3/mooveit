@@ -38,8 +38,7 @@ public class CSVReader {
             }
 /*           for (Map.Entry<String, Integer> entry : Z2.getZ2().entrySet()) {
                 System.out.println("Commission: " + entry.getKey() + " - Time:" + entry.getValue());
-            }
-            System.out.println(Z2.getZ2().size());*/
+            }*/
         }
         catch (UnknownFormatConversionException e) {
             e.printStackTrace();

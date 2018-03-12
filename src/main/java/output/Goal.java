@@ -22,20 +22,20 @@ public class Goal {
         goal.put("w",0);
     }
 
-    public static void updateGoal(Integer delay){
-        if (delay > 15 && delay <= 30){
+    public static void updateGoal(Integer count){
+        if (count == 2){
             goal.put("z",goal.get("z")+1);
             goal.put("value",goal.get("value")+1);
         }
-        if (delay > 30 && delay <= 45){
+        if (count == 3){
             goal.put("z1",goal.get("z1")+1);
             goal.put("value",goal.get("value")+2);
         }
-        if (delay > 45 && delay <= 60){
+        if (count == 4){
             goal.put("z2",goal.get("z2")+1);
             goal.put("value",goal.get("value")+3);
         }
-        if (delay > 60){
+        if (count > 4){
             goal.put("w",goal.get("w")+1);
             goal.put("value",goal.get("value")+10);
         }
