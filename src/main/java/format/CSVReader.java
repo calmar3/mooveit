@@ -22,6 +22,7 @@ public class CSVReader {
         Z.getZ().put(id,0);
         Z1.getZ1().put(id,0);
         Z2.getZ2().put(id,0);
+        CommissionList.getList().add(id);
     }
 
     public static void parseCommissionTarget(String input){
@@ -61,6 +62,8 @@ public class CSVReader {
             DistanceMap distanceMap = DistanceMap.getInstance();
             for (CSVRecord record : records) {
                 initAdjacency(record.get(0));
+                if (record.get(0).contains("M"))
+                    Movers.getMovers().add(record.get(0));
                 map = record.toMap();
                 for (Map.Entry<String, String> entry : map.entrySet()) {
                     if (!entry.getKey().equals("D_bar")){
