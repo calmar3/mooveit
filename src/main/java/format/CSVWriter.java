@@ -1,5 +1,6 @@
 package format;
 
+import config.AppConfig;
 import model.Adjacency;
 import model.CommissionList;
 import model.Movers;
@@ -24,7 +25,7 @@ public class CSVWriter {
 
     private static void printGoal() {
         try {
-            BufferedWriter goal = Files.newBufferedWriter(Paths.get("goal.csv"));
+            BufferedWriter goal = Files.newBufferedWriter(Paths.get("goal_"+ AppConfig.MOVER_NUMBER+"movers.csv"));
             CSVPrinter goalPrinter = new CSVPrinter(goal, CSVFormat.EXCEL);
             for (Map.Entry<String, Integer> entry : Goal.getGoal().entrySet()) {
                 goalPrinter.printRecord(entry.getKey(),entry.getValue());
@@ -37,7 +38,7 @@ public class CSVWriter {
 
     private static void printMatrix() {
         try {
-            BufferedWriter y = Files.newBufferedWriter(Paths.get("y.csv"));
+            BufferedWriter y = Files.newBufferedWriter(Paths.get("y_"+ AppConfig.MOVER_NUMBER+"movers.csv"));
 
             CSVPrinter yPrinter = new CSVPrinter(y, CSVFormat.EXCEL.withFirstRecordAsHeader());
             CommissionList.getList().add(0,"Matrix");
@@ -80,11 +81,11 @@ public class CSVWriter {
 
     private static void printVectors() {
         try {
-            BufferedWriter x = Files.newBufferedWriter(Paths.get( "x.csv"));
-            BufferedWriter z = Files.newBufferedWriter(Paths.get("z.csv"));
-            BufferedWriter z1 = Files.newBufferedWriter(Paths.get("z1.csv"));
-            BufferedWriter z2 = Files.newBufferedWriter(Paths.get("z2.csv"));
-            BufferedWriter w = Files.newBufferedWriter(Paths.get("w.csv"));
+            BufferedWriter x = Files.newBufferedWriter(Paths.get( "x_"+ AppConfig.MOVER_NUMBER+"movers.csv"));
+            BufferedWriter z = Files.newBufferedWriter(Paths.get("z_"+ AppConfig.MOVER_NUMBER+"movers.csv"));
+            BufferedWriter z1 = Files.newBufferedWriter(Paths.get("z1_"+ AppConfig.MOVER_NUMBER+"movers.csv"));
+            BufferedWriter z2 = Files.newBufferedWriter(Paths.get("z2_"+ AppConfig.MOVER_NUMBER+"movers.csv"));
+            BufferedWriter w = Files.newBufferedWriter(Paths.get("w_"+ AppConfig.MOVER_NUMBER+"movers.csv"));
             CSVPrinter xPrinter = new CSVPrinter(x, CSVFormat.EXCEL.withHeader("commission","value"));
             CSVPrinter zPrinter = new CSVPrinter(z, CSVFormat.EXCEL.withHeader("commission","value"));
             CSVPrinter z1Printer = new CSVPrinter(z1, CSVFormat.EXCEL.withHeader("commission","value"));
