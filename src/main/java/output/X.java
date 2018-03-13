@@ -16,7 +16,7 @@ public class X {
         X.x = x;
     }
 
-    public static void update(String commission, Integer target, Integer delay,Integer lastDelivery){
+    public static void update(String commission, Integer target, Integer delay, Integer lastDelivery){
         Integer delivery = (lastDelivery + delay) - target;
         if (delivery < AppConfig.MIN_DELIVERY_TIME){
             x.put(commission,target - AppConfig.EARLY_DELIVERY_TIME);

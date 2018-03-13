@@ -11,23 +11,28 @@ public class Scheduling {
     private static HashMap<String,HashMap<String,Integer>> allocation;
     private static HashMap<String,Integer> assigned;
     private static HashMap<String,Integer> assigned2;
+    private static TreeSet<Commission> proposed;
 
-    public static void run() {
+    public static void run() throws InterruptedException {
         initScheduling();
         assignMovers();
+        proposed = new TreeSet<Commission>();
         while (TargetSet.getInstance().getCommissionTreeSet().size()>0){
             assignCommission();
             assigned = new HashMap<String, Integer>(assigned2);
             assigned2 = new HashMap<String, Integer>();
 
+
+
         }
     }
 
-    public static void assignCommission(){
+    public static void assignCommission() throws InterruptedException {
 
         TargetSet targetSet = TargetSet.getInstance();
         HashMap<String,TreeSet<Distance>> distanceMap = DistanceMap.getInstance().getDistanceMap();
         List<Commission> temp = new ArrayList<Commission>(targetSet.getCommissionTreeSet());
+        HashMap<String, Integer> fromToDistance = new HashMap<String, Integer>();
         int j = 0;
         for (int i = 0; i < AppConfig.MOVER_NUMBER && temp.size()>0; i++) {
             Commission commission = temp.get(0);
@@ -43,22 +48,32 @@ public class Scheduling {
                         if (Adjacency.getAdj().get(distance.getId())==null){
                             if (assigned.get(distance.getId())!=null){
                                 Integer delivery = X.getX().get(distance.getId()) + distance.getDistance();
-                                if (delivery-commission.getTarget() <=threshold){
-                                    HashMap<String,Integer> value = new HashMap<String, Integer>();
-                                    value.put(distance.getId(),distance.getDistance());
-                                    allocation.put(commission.getId(),value);
-                                    Adjacency.getAdj().put(distance.getId(),commission.getId());
-                                    assigned.remove(distance.getId());
-                                    X.update(commission.getId(),commission.getTarget(),distance.getDistance(),X.getX().get(distance.getId()));
-                                    Goal.updateGoal(count);
-                                    assigned2.put(commission.getId(),X.getX().get(commission.getId()));
-                                    found = true;
-                                    updateVectors(count,commission.getId());
-                                    break;
+                                if (delivery-commission.getTarget() <= threshold){
+                                    Commission tmp = new Commission();
+                                    tmp.setId(distance.getId());
+                                    tmp.setTarget((delivery-commission.getTarget()));
+                                    fromToDistance.put(distance.getId(),distance.getDistance());
+                                    proposed.add(tmp);
                                 }
                             }
                         }
                     }
+                }
+                if(proposed.size()!=0){
+                    Commission candidate = proposed.first();
+                    HashMap<String,Integer> value = new HashMap<String, Integer>();
+                    value.put(candidate.getId(),fromToDistance.get(candidate.getId()));
+                    allocation.put(commission.getId(),value);
+                    Adjacency.getAdj().put(candidate.getId(),commission.getId());
+                    assigned.remove(candidate.getId());
+                    X.update(commission.getId(),commission.getTarget(),fromToDistance.get(candidate.getId()),X.getX().get(candidate.getId()));
+                    Goal.updateGoal(count);
+                    assigned2.put(commission.getId(),X.getX().get(commission.getId()));
+                    found = true;
+                    updateVectors(count,commission.getId());
+                    proposed.clear();
+                    break;
+
                 }
                 count++;
                 if (count > 4 && !found){
