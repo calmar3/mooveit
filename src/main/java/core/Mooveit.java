@@ -14,6 +14,7 @@ public class Mooveit {
         }
         else {
             AppConfig.MOVER_NUMBER = Integer.parseInt(args[2]);
+            System.out.println("Mover Number: " + AppConfig.MOVER_NUMBER);
             long programStart = System.currentTimeMillis();
             CSVReader.parseCommissionTarget(args[0]);
             CSVReader.parseMatrix(args[1]);
