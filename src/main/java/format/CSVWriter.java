@@ -98,10 +98,8 @@ public class CSVWriter {
                 z2Printer.printRecord(entry.getKey(), Z2.getZ2().get(entry.getKey()));
                 wPrinter.printRecord(entry.getKey(), W.getW().get(entry.getKey()));
             }
-            for (String mover: Movers.getMovers()){
-                //if (Adjacency.getAdj().get(mover)!=null)
+            for (String mover: Movers.getMovers())
                 xPrinter.printRecord(mover,0);
-            }
             xPrinter.flush();
             zPrinter.flush();
             z1Printer.flush();

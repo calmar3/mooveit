@@ -1,6 +1,7 @@
 package format;
 
 
+import config.AppConfig;
 import model.*;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
@@ -10,8 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.Map;
-import java.util.UnknownFormatConversionException;
+import java.util.*;
 
 
 public class CSVReader {
@@ -60,27 +60,41 @@ public class CSVReader {
             Iterable<CSVRecord> records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(in);
             Map<String,String> map;
             DistanceMap distanceMap = DistanceMap.getInstance();
+            int count = 0;
+            HashMap<String,Integer> bannedMovers = new HashMap<>();
             for (CSVRecord record : records) {
                 initAdjacency(record.get(0));
-                if (record.get(0).contains("M"))
-                    Movers.getMovers().add(record.get(0));
+                if (record.get(0).contains("M")){
+                    if (count < AppConfig.MOVER_NUMBER){
+                        Movers.getMovers().add(record.get(0));
+                        count++;
+                    }
+                    else
+                        bannedMovers.put(record.get(0),0);
+                }
                 map = record.toMap();
-                for (Map.Entry<String, String> entry : map.entrySet()) {
-                    if (!entry.getKey().equals("D_bar")){
-                        if (distanceMap.getDistanceMap().get(entry.getKey())==null){
-                            if (Integer.parseInt(entry.getValue()) >0){
-                                distanceMap.addDistance(entry.getKey(),
-                                        new Distance(record.get(0),Integer.parseInt(entry.getValue())));
+                if (bannedMovers.get(record.get(0))== null){
+                    for (Map.Entry<String, String> entry : map.entrySet()) {
+                        if (!entry.getKey().equals("D_bar")){
+                            if (entry.getKey().contains("M"))
+                                System.out.println(entry.getKey());
+                            if (distanceMap.getDistanceMap().get(entry.getKey())==null){
+                                if (Integer.parseInt(entry.getValue()) >0){
+                                    distanceMap.addDistance(entry.getKey(),
+                                            new Distance(record.get(0),Integer.parseInt(entry.getValue())));
+                                }
                             }
-                        }
-                        else{
-                            if (Integer.parseInt(entry.getValue()) >0){
-                                distanceMap.addDistance(entry.getKey(),
-                                        new Distance(record.get(0),Integer.parseInt(entry.getValue())));
+                            else{
+                                if (Integer.parseInt(entry.getValue()) >0){
+                                    distanceMap.addDistance(entry.getKey(),
+                                            new Distance(record.get(0),Integer.parseInt(entry.getValue())));
+                                }
                             }
                         }
                     }
                 }
+
+
             }
 /*           for (Map.Entry<String, TreeSet<Distance>> entry : distanceMap.getDistanceMap().entrySet()) {
                 System.out.println("Commission: " + entry.getKey() + " - Raw:" + entry.getValue().toString());
