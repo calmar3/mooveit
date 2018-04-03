@@ -16,13 +16,14 @@ import java.util.*;
 
 public class CSVReader {
 
-    public static void initVectors(String id){
+    public static void initVectors(String id,Integer target){
         X.getX().put(id,0);
         W.getW().put(id,0);
         Z.getZ().put(id,0);
         Z1.getZ1().put(id,0);
         Z2.getZ2().put(id,0);
         CommissionList.getList().add(id);
+        TargetTimeList.getList().add(target);
     }
 
     public static void parseCommissionTarget(String input){
@@ -35,7 +36,7 @@ public class CSVReader {
                 temp.setId(record.get("order"));
                 temp.setTarget(Integer.parseInt(record.get("t")));
                 commissionSet.addCommission(temp);
-                initVectors(temp.getId());
+                initVectors(temp.getId(),temp.getTarget());
             }
 /*           for (Map.Entry<String, Integer> entry : Z2.getZ2().entrySet()) {
                 System.out.println("Commission: " + entry.getKey() + " - Time:" + entry.getValue());

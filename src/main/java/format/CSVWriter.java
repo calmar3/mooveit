@@ -4,6 +4,7 @@ import config.AppConfig;
 import model.Adjacency;
 import model.CommissionList;
 import model.Movers;
+import model.TargetTimeList;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import output.*;
@@ -41,7 +42,7 @@ public class CSVWriter {
             BufferedWriter y = Files.newBufferedWriter(Paths.get("y_"+ AppConfig.MOVER_NUMBER+"movers.csv"));
 
             CSVPrinter yPrinter = new CSVPrinter(y, CSVFormat.EXCEL.withFirstRecordAsHeader());
-            CommissionList.getList().add(0,"Matrix");
+            CommissionList.getList().add(0,"D_bar");
             String[] tempList = new String[CommissionList.getList().size()];
             tempList = CommissionList.getList().toArray(tempList);
             yPrinter.printRecord(tempList);
@@ -91,12 +92,16 @@ public class CSVWriter {
             CSVPrinter z1Printer = new CSVPrinter(z1, CSVFormat.EXCEL.withHeader("commission","value"));
             CSVPrinter z2Printer = new CSVPrinter(z2, CSVFormat.EXCEL.withHeader("commission","value"));
             CSVPrinter wPrinter = new CSVPrinter(w, CSVFormat.EXCEL.withHeader("commission","value"));
-            for (Map.Entry<String, Integer> entry : X.getX().entrySet()) {
-                xPrinter.printRecord(entry.getKey(),entry.getValue());
-                zPrinter.printRecord(entry.getKey(), Z.getZ().get(entry.getKey()));
-                z1Printer.printRecord(entry.getKey(), Z1.getZ1().get(entry.getKey()));
-                z2Printer.printRecord(entry.getKey(), Z2.getZ2().get(entry.getKey()));
-                wPrinter.printRecord(entry.getKey(), W.getW().get(entry.getKey()));
+            for (int i = 0; i < CommissionList.getList().size();i++){
+                String comm = CommissionList.getList().get(i);
+                if (X.getX().get(comm)>0)
+                    xPrinter.printRecord(comm,X.getX().get(comm));
+                else
+                    xPrinter.printRecord(comm,TargetTimeList.getList().get(i));
+                zPrinter.printRecord(comm,Z.getZ().get(comm));
+                z1Printer.printRecord(comm,Z1.getZ1().get(comm));
+                z2Printer.printRecord(comm,Z2.getZ2().get(comm));
+                wPrinter.printRecord(comm,W.getW().get(comm));
             }
             for (String mover: Movers.getMovers())
                 xPrinter.printRecord(mover,0);
