@@ -12,6 +12,10 @@ public class TargetSet {
         this.commissionTreeSet = new TreeSet<Commission>();
     }
 
+    public static void clear() {
+        instance = null;
+    }
+
     public TreeSet<Commission> getCommissionTreeSet() {
         return commissionTreeSet;
     }

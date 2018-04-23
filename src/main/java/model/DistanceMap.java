@@ -19,6 +19,10 @@ public class DistanceMap {
         return instance;
     }
 
+    public static void clear() {
+        instance = null;
+    }
+
     public void addDistance(String key, Distance distance){
         TreeSet<Distance> set = this.distanceMap.get(key);
         if (set == null)

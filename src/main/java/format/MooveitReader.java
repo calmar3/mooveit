@@ -2,19 +2,17 @@ package format;
 
 
 import config.AppConfig;
+import core.Mooveit;
 import model.*;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import output.*;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.util.*;
 
 
-public class CSVReader {
+public class MooveitReader {
 
     public static void initVectors(String id,Integer target){
         X.getX().put(id,0);
@@ -28,7 +26,7 @@ public class CSVReader {
 
     public static void parseCommissionTarget(String input){
         try {
-            Reader in = new FileReader(input);
+            Reader in = new java.io.FileReader(input);
             Iterable<CSVRecord> records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(in);
             TargetSet commissionSet = TargetSet.getInstance();
             for (CSVRecord record : records) {
@@ -57,7 +55,7 @@ public class CSVReader {
 
     public static void parseMatrix(String input){
         try {
-            Reader in = new FileReader(input);
+            Reader in = new java.io.FileReader(input);
             Iterable<CSVRecord> records = CSVFormat.EXCEL.withFirstRecordAsHeader().parse(in);
             Map<String,String> map;
             DistanceMap distanceMap = DistanceMap.getInstance();
@@ -111,4 +109,26 @@ public class CSVReader {
     }
 
 
+    public static void parseMoverNumber(String path) {
+        try {
+            try (BufferedReader br = new BufferedReader(new java.io.FileReader(path))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    List<Integer> number = new ArrayList<>();
+                    String[] num = line.split(",");
+                    for (int i = 0; i < num.length ; i++) {
+                        number.add(Integer.parseInt(num[i]));
+                    }
+                    Mooveit.moverNumber.add(number);
+                }
+            }
+        }
+        catch (UnknownFormatConversionException e) {
+            e.printStackTrace();
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 }
