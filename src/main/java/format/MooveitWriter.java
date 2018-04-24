@@ -141,6 +141,8 @@ public class MooveitWriter {
                     writer.write("Algorithm execution time: tempo di esecuzione dell’euristica ASO\n" +
                             "Program execution time: tempo di esecuzione dell’intero programma, comprese le operazioni di input ed output da file CSV.\n\n"
                             + "————————————————————————————————————————————————\n\n");
+                    writer.write("Mover number: " + AppConfig.MOVER_NUMBER +"\n"+"Algorithm execution time: " +algo +"\n"
+                            +"Goal value: " + goal +"\n"+"Program execution time: " + program +"\n" +"\n\n————————————————————————————————————————————————\n\n" );
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
