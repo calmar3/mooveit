@@ -134,17 +134,27 @@ public class MooveitWriter {
     }
 
     public static void printOutput(String filename, long algo, long program, Integer goal, boolean first) {
-        try (Writer writer = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream(filename,true), "utf-8"))) {
+
             if (first){
-                writer.write("Algorithm execution time: tempo di esecuzione dell’euristica ASO\n" +
-                        "Program execution time: tempo di esecuzione dell’intero programma, comprese le operazioni di input ed output da file CSV.\n\n"
-                        +"————————————————————————————————————————————————\n\n");
+                try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+                        new FileOutputStream(filename), "utf-8"))) {
+                    writer.write("Algorithm execution time: tempo di esecuzione dell’euristica ASO\n" +
+                            "Program execution time: tempo di esecuzione dell’intero programma, comprese le operazioni di input ed output da file CSV.\n\n"
+                            + "————————————————————————————————————————————————\n\n");
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
             }
-            writer.write("Mover number: " + AppConfig.MOVER_NUMBER +"\n"+"Algorithm execution time: " +algo +"\n"
-            +"Goal value: " + goal +"\n"+"Program execution time: " + program +"\n" +"\n\n————————————————————————————————————————————————\n\n" );
-        } catch (IOException e) {
-            e.printStackTrace();
+            else{
+                try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+                        new FileOutputStream(filename,true), "utf-8"))) {
+                    writer.write("Mover number: " + AppConfig.MOVER_NUMBER +"\n"+"Algorithm execution time: " +algo +"\n"
+                            +"Goal value: " + goal +"\n"+"Program execution time: " + program +"\n" +"\n\n————————————————————————————————————————————————\n\n" );
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+
         }
-    }
+
 }

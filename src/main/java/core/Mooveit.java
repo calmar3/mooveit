@@ -28,23 +28,18 @@ public class Mooveit {
             for (int i = 0; i < numberInput ; i++){
                 for (int j = 0; j < moverNumber.get(i).size(); j++) {
                     AppConfig.MOVER_NUMBER = moverNumber.get(i).get(j);
-                    //System.out.println("Mover Number: " + AppConfig.MOVER_NUMBER);
                     commissionTarget = inputPath+"/deliveryTime_ist"+(i+1)+".csv";
                     deliveryMatrix = inputPath+"/distanceMatrix_ist"+(i+1)+".csv";
-                    //System.out.println(commissionTarget);
                     long programStart = System.currentTimeMillis();
                     loadInput();
                     long algoStart = System.currentTimeMillis();
                     exe();
                     long algoElapsed = System.currentTimeMillis();
-                    //System.out.println("Algorithm execution time: " + (algoElapsed-algoStart) + " ms");
-                    //System.out.println("Goal value: " + Goal.getGoal().get("value"));
+
                     long programElapsed = System.currentTimeMillis();
                     MooveitWriter.printResults("output/ist"+(i+1)+"/"+AppConfig.MOVER_NUMBER+"mover/");
                     MooveitWriter.printOutput("output/ist"+(i+1)+"/execution_time_ist"+(i+1),(algoElapsed-algoStart),
                             (programElapsed-programStart),Goal.getGoal().get("value"),(j==0));
-                    //System.out.println("Program execution time: " + (programElapsed-programStart) + " ms");
-                    //System.out.println("--------------------\n\n");
                     clean();
                 }
             }
