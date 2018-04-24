@@ -38,7 +38,7 @@ public class Mooveit {
 
                     long programElapsed = System.currentTimeMillis();
                     MooveitWriter.printResults("output/ist"+(i+1)+"/"+AppConfig.MOVER_NUMBER+"mover/");
-                    MooveitWriter.printOutput("output/ist"+(i+1)+"/execution_time_ist"+(i+1),(algoElapsed-algoStart),
+                    MooveitWriter.printOutput("output/ist"+(i+1)+"/execution_time_ist"+(i+1)+".txt",(algoElapsed-algoStart),
                             (programElapsed-programStart),Goal.getGoal().get("value"),(j==0));
                     clean();
                 }
