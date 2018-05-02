@@ -14,6 +14,4 @@ public class Z {
         Z.z = z;
     }
 
-    public static void update() {
-    }
 }

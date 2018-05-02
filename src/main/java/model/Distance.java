@@ -3,9 +3,9 @@ package model;
 public class Distance implements Comparable<Distance> {
 
     private String id;
-    private Integer distance;
+    private Double distance;
 
-    public Distance(String id, Integer distance) {
+    public Distance(String id, Double distance) {
         this.id = id;
         this.distance = distance;
     }
@@ -18,11 +18,11 @@ public class Distance implements Comparable<Distance> {
         this.id = id;
     }
 
-    public Integer getDistance() {
+    public Double getDistance() {
         return distance;
     }
 
-    public void setDistance(Integer distance) {
+    public void setDistance(Double distance) {
         this.distance = distance;
     }
 

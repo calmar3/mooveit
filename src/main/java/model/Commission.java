@@ -3,7 +3,7 @@ package model;
 public class Commission implements Comparable<Commission>{
 
     private String id;
-    private Integer target;
+    private Double target;
 
     public Commission() {
     }
@@ -17,11 +17,11 @@ public class Commission implements Comparable<Commission>{
         this.id = id;
     }
 
-    public Integer getTarget() {
+    public Double getTarget() {
         return target;
     }
 
-    public void setTarget(Integer target) {
+    public void setTarget(Double target) {
         this.target = target;
     }
 

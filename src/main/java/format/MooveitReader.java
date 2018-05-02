@@ -14,8 +14,8 @@ import java.util.*;
 
 public class MooveitReader {
 
-    public static void initVectors(String id,Integer target){
-        X.getX().put(id,0);
+    public static void initVectors(String id,Double target){
+        X.getX().put(id,0.0);
         W.getW().put(id,0);
         Z.getZ().put(id,0);
         Z1.getZ1().put(id,0);
@@ -32,13 +32,14 @@ public class MooveitReader {
             for (CSVRecord record : records) {
                 Commission temp = new Commission();
                 temp.setId(record.get("order"));
-                temp.setTarget(Integer.parseInt(record.get("t")));
+                temp.setTarget(Double.parseDouble(record.get("t")));
                 commissionSet.addCommission(temp);
                 initVectors(temp.getId(),temp.getTarget());
             }
-/*           for (Map.Entry<String, Integer> entry : Z2.getZ2().entrySet()) {
-                System.out.println("Commission: " + entry.getKey() + " - Time:" + entry.getValue());
+           /*for (Commission comm : commissionSet.getCommissionTreeSet()) {
+                System.out.println("Commission: " + comm.getId() + " - Time:" + comm.getTarget());
             }*/
+
         }
         catch (UnknownFormatConversionException e) {
             e.printStackTrace();
@@ -78,25 +79,24 @@ public class MooveitReader {
                             if (entry.getKey().contains("M"))
                                 System.out.println(entry.getKey());
                             if (distanceMap.getDistanceMap().get(entry.getKey())==null){
-                                if (Integer.parseInt(entry.getValue()) >0){
+                                if (Double.parseDouble(entry.getValue()) >0){
                                     distanceMap.addDistance(entry.getKey(),
-                                            new Distance(record.get(0),Integer.parseInt(entry.getValue())));
+                                            new Distance(record.get(0),Double.parseDouble(entry.getValue())));
                                 }
+
                             }
                             else{
-                                if (Integer.parseInt(entry.getValue()) >0){
+                                if (!entry.getKey().equals(record.get(0))){
                                     distanceMap.addDistance(entry.getKey(),
-                                            new Distance(record.get(0),Integer.parseInt(entry.getValue())));
+                                            new Distance(record.get(0),Double.parseDouble(entry.getValue())));
                                 }
                             }
                         }
                     }
                 }
-
-
             }
 /*           for (Map.Entry<String, TreeSet<Distance>> entry : distanceMap.getDistanceMap().entrySet()) {
-                System.out.println("Commission: " + entry.getKey() + " - Raw:" + entry.getValue().toString());
+                System.out.println("Commission: " + entry.getKey() + " - Raw:" + entry.getValue().size());
             }*/
         }
         catch (UnknownFormatConversionException e) {
@@ -115,11 +115,13 @@ public class MooveitReader {
                 String line;
                 while ((line = br.readLine()) != null) {
                     List<Integer> number = new ArrayList<>();
+                    if (line.contains("ist"))
+                        continue;
                     String[] num = line.split(",");
-                    for (int i = 0; i < num.length ; i++) {
+                    for (int i = 1; i < num.length ; i++) {
                         number.add(Integer.parseInt(num[i]));
                     }
-                    Mooveit.moverNumber.add(number);
+                    Mooveit.dataset.put(num[0],number);
                 }
             }
         }

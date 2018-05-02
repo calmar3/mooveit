@@ -5,13 +5,13 @@ import java.util.List;
 
 public class TargetTimeList {
 
-    public static List<Integer> getList() {
+    public static List<Double> getList() {
         return list;
     }
 
-    public static void setList(List<Integer> list) {
+    public static void setList(List<Double> list) {
         TargetTimeList.list = list;
     }
 
-    public static List<Integer> list = new ArrayList<>();
+    public static List<Double> list = new ArrayList<>();
 }

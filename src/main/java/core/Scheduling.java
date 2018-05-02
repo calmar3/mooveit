@@ -8,17 +8,16 @@ import java.util.*;
 
 public class Scheduling {
 
-    private static HashMap<String,HashMap<String,Integer>> allocation;
-    private static HashMap<String,Integer> assigned;
-    private static HashMap<String,Integer> assigned2;
+    private static HashMap<String,Double> assigned;
+    private static HashMap<String,Double> assigned2;
 
     public static void run() {
         initScheduling();
         assignMovers();
         while (TargetSet.getInstance().getCommissionTreeSet().size()>0){
             assignCommission();
-            assigned = new HashMap<String, Integer>(assigned2);
-            assigned2 = new HashMap<String, Integer>();
+            assigned = new HashMap<String, Double>(assigned2);
+            assigned2 = new HashMap<String, Double>();
 
         }
     }
@@ -36,17 +35,14 @@ public class Scheduling {
             int count = 1;
             while (!found){
                 Iterator<Distance> itr = distanceMap.get(commission.getId()).iterator();
-                threshold = 15*count;
+                threshold = AppConfig.STEP*count;
                 while (itr.hasNext()) {
                     Distance distance = itr.next();
                     if (!distance.getId().contains("M")){
                         if (Adjacency.getAdj().get(distance.getId())==null){
                             if (assigned.get(distance.getId())!=null){
-                                Integer delivery = X.getX().get(distance.getId()) + distance.getDistance();
+                                Double delivery = X.getX().get(distance.getId()) + distance.getDistance();
                                 if (delivery-commission.getTarget() <=threshold){
-                                    HashMap<String,Integer> value = new HashMap<String, Integer>();
-                                    value.put(distance.getId(),distance.getDistance());
-                                    allocation.put(commission.getId(),value);
                                     Adjacency.getAdj().put(distance.getId(),commission.getId());
                                     assigned.remove(distance.getId());
                                     X.update(commission.getId(),commission.getTarget(),distance.getDistance(),X.getX().get(distance.getId()));
@@ -98,12 +94,9 @@ public class Scheduling {
                 Distance distance = itr.next();
                 if (distance.getId().contains("M")){
                     if (Adjacency.getAdj().get(distance.getId())==null){
-                        HashMap<String,Integer> value = new HashMap<String, Integer>();
-                        value.put(distance.getId(),distance.getDistance());
-                        allocation.put(commission.getId(),value);
                         Adjacency.getAdj().put(distance.getId(),commission.getId());
-                        Goal.updateGoal(distance.getDistance()-commission.getTarget());
-                        X.update(commission.getId(),commission.getTarget(),distance.getDistance(),0);
+                        Goal.updateGoal(getCount(distance.getDistance()+AppConfig.MOVER_RELEASE_TIME-commission.getTarget()));
+                        X.update(commission.getId(),commission.getTarget(),distance.getDistance(),0.0);
                         assigned.put(commission.getId(),X.getX().get(commission.getId()));
                         break;
                     }
@@ -114,9 +107,21 @@ public class Scheduling {
         targetSet.setCommissionTreeSet(new TreeSet<Commission>(temp));
     }
 
+    public static Integer getCount(Double diff){
+        if (diff <= AppConfig.STEP)
+            return 1;
+        else if (diff <= AppConfig.STEP*2)
+            return 2;
+        else if (diff <= AppConfig.STEP*3)
+            return 3;
+        else if (diff <= AppConfig.STEP*4)
+            return 4;
+        else
+            return 5;
+    }
+
     public static void initScheduling(){
-        allocation = new HashMap<String, HashMap<String, Integer>>();
-        assigned = new HashMap<String, Integer>();
-        assigned2 = new HashMap<String,Integer>();
+        assigned = new HashMap<String, Double>();
+        assigned2 = new HashMap<String,Double>();
     }
 }

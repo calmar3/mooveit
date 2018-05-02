@@ -14,6 +14,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Map;
 
 
@@ -88,11 +89,11 @@ public class MooveitWriter {
             BufferedWriter z1 = Files.newBufferedWriter(Paths.get(path+"z1_"+ AppConfig.MOVER_NUMBER+"movers.csv"));
             BufferedWriter z2 = Files.newBufferedWriter(Paths.get(path+"z2_"+ AppConfig.MOVER_NUMBER+"movers.csv"));
             BufferedWriter w = Files.newBufferedWriter(Paths.get(path+"w_"+ AppConfig.MOVER_NUMBER+"movers.csv"));
-            CSVPrinter xPrinter = new CSVPrinter(x, CSVFormat.EXCEL.withHeader("commission","value"));
-            CSVPrinter zPrinter = new CSVPrinter(z, CSVFormat.EXCEL.withHeader("commission","value"));
-            CSVPrinter z1Printer = new CSVPrinter(z1, CSVFormat.EXCEL.withHeader("commission","value"));
-            CSVPrinter z2Printer = new CSVPrinter(z2, CSVFormat.EXCEL.withHeader("commission","value"));
-            CSVPrinter wPrinter = new CSVPrinter(w, CSVFormat.EXCEL.withHeader("commission","value"));
+            CSVPrinter xPrinter = new CSVPrinter(x, CSVFormat.EXCEL.withHeader("D_bar","value"));
+            CSVPrinter zPrinter = new CSVPrinter(z, CSVFormat.EXCEL.withHeader("D_bar","value"));
+            CSVPrinter z1Printer = new CSVPrinter(z1, CSVFormat.EXCEL.withHeader("D_bar","value"));
+            CSVPrinter z2Printer = new CSVPrinter(z2, CSVFormat.EXCEL.withHeader("D_bar","value"));
+            CSVPrinter wPrinter = new CSVPrinter(w, CSVFormat.EXCEL.withHeader("D_bar","value"));
             for (int i = 0; i < CommissionList.getList().size();i++){
                 String comm = CommissionList.getList().get(i);
                 if (X.getX().get(comm)>0)
@@ -118,22 +119,22 @@ public class MooveitWriter {
 
     }
 
-    public static void createPaths(Integer numberInput){
-        for (int i = 0; i < numberInput; i++) {
-            for (int j = 0; j < Mooveit.moverNumber.get(i).size(); j++) {
-                String pathString = "output/ist"+(i+1)+"/"+Mooveit.moverNumber.get(i).get(j)+"mover/";
-                Path path = Paths.get(pathString);
-                try {
-                    Files.createDirectories(path);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
+    public static void createPaths(){
+       for (Map.Entry<String,List<Integer>> entry : Mooveit.dataset.entrySet()) {
+           for (int j = 0; j < entry.getValue().size(); j++) {
+               String pathString = "output/ist"+ entry.getKey()+"/"+entry.getValue().get(j)+"mover/";
+               Path path = Paths.get(pathString);
+               try {
+                   Files.createDirectories(path);
+               } catch (IOException e) {
+                   e.printStackTrace();
+               }
+           }
         }
     }
 
-    public static void printOutput(String filename, long algo, long program, Integer goal, boolean first) {
+
+    public static void printOutput(String filename,long algo, long program, Integer goal, boolean first) {
 
             if (first){
                 try (Writer writer = new BufferedWriter(new OutputStreamWriter(
@@ -159,4 +160,25 @@ public class MooveitWriter {
 
         }
 
+    public static void printTable(String s, String key,boolean first) {
+        if (first){
+            try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream(s), "utf-8"))) {
+                writer.write("id_shift,mover_number,goal_value,z_value,z1_value,z2_value,w_value\n");
+                writer.write(key+","+AppConfig.MOVER_NUMBER+","+Goal.getGoal().get("value")+","+Goal.getGoal().get("z")+","
+                        +Goal.getGoal().get("z1")+","+Goal.getGoal().get("z2")+","+Goal.getGoal().get("w")+"\n");
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
+        else{
+            try (Writer writer = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream(s,true), "utf-8"))) {
+                writer.write(key+","+AppConfig.MOVER_NUMBER+","+Goal.getGoal().get("value")+","+Goal.getGoal().get("z")+","
+                        +Goal.getGoal().get("z1")+","+Goal.getGoal().get("z2")+","+Goal.getGoal().get("w")+"\n");
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        }
+    }
 }
