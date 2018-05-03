@@ -106,7 +106,7 @@ public class MooveitWriter {
                 wPrinter.printRecord(comm,W.getW().get(comm));
             }
             for (String mover: Movers.getMovers())
-                xPrinter.printRecord(mover,0);
+                xPrinter.printRecord(mover,AppConfig.MOVER_RELEASE_TIME);
             xPrinter.flush();
             zPrinter.flush();
             z1Printer.flush();
